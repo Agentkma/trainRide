@@ -1,34 +1,37 @@
-import React, {Component} from 'react';
-import {Scene, Router, TabBar, Icon} from 'react-native-router-flux';
+import React, { Component } from 'react';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import firebase from 'firebase';
+//redux-thunk is middleware
+import ReduxThunk from 'redux-thunk';
 
-/*
- * Containers (Views)
- */
- import WelcomeScene from './scenes/WelcomeScene'
- import TeamSelectorScene from './scenes/TeamSelectorScene'
- import TeamProfileScene from './scenes/TeamProfileScene'
+import reducers from './reducers';
+import Router from './Router.js';
 
-/*
- * TabBar Icons
- */
-import TabIcon from './components/navigation/Tab';
+class App extends Component {
+	componentWillMount() {
+		// Initialize Firebase
+		const config = {
+			apiKey: 'AIzaSyDgK6P9sOc6FwQU9uzLeYFgaqAtEPalBcs',
+			authDomain: 'trainride-5d227.firebaseapp.com',
+			databaseURL: 'https://trainride-5d227.firebaseio.com',
+			projectId: 'trainride-5d227',
+			storageBucket: 'trainride-5d227.appspot.com',
+			messagingSenderId: '419395062547'
+		};
+		firebase.initializeApp(config);
+	}
 
-const App = () => {
-  return(
-    <Router>
-      <Scene key="root" >
-        <Scene key="Welcome" initial={true} component={WelcomeScene} title='Welcome' direction="vertical"/>
-        <Scene key="tabbar" tabs={true} tabBarStyle={{ backgroundColor: '#eee' }}>
-          <Scene key="character" title="Characters" icon={TabIcon} initial={true}>
-            <Scene key="characters" component={TeamSelectorScene} title="Characters" />
-          </Scene>
-          <Scene key="prof" title="Profile" icon={TabIcon}>
-            <Scene key="profile" component={TeamProfileScene} title="Profile" />
-          </Scene>
-        </Scene>
-      </Scene>
-    </Router>
-  )
+	render() {
+		//applyMiddleware(ReduxThunk) is a store 'enhancer'
+		const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
+
+		return (
+			<Provider store={store}>
+				<Router />
+			</Provider>
+		);
+	}
 }
 
-export default App
+export default App;
