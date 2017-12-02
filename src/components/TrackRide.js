@@ -4,13 +4,12 @@ import { Text, View } from 'react-native';
 // import _ from 'lodash';
 
 // import { userRideSave} from '../actions';
-import { HamburgerNav } from './common';
+// import { HamburgerNav } from './common';
 
 class TrackRide extends Component {
 	render() {
 		return (
 			<View>
-				<HamburgerNav />
 				<Text> Track Your Ride</Text>
 			</View>
 		);
