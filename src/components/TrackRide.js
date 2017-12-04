@@ -65,11 +65,10 @@ class TrackRide extends Component {
 	}
 
 	render() {
-		//TODO function not working prop
-		function msToTime(duration) {
-			let seconds = parseInt((duration / 1000) % 60);
-			let minutes = parseInt((duration / (1000 * 60)) % 60);
-			let hours = parseInt((duration / (1000 * 60 * 60)) % 24);
+		function msToTime(time) {
+			let seconds = Math.floor(time % 60);
+			let minutes = Math.floor((time / 60) % 60);
+			let hours = Math.floor((time / (60 * 60)) % 24);
 
 			hours = hours < 10 ? `0${hours}` : hours;
 			minutes = minutes < 10 ? `0${minutes}` : minutes;
@@ -78,17 +77,15 @@ class TrackRide extends Component {
 			return `${hours}:${minutes}:${seconds}`;
 		}
 		const time = Math.floor(this.state.elapsedTime / 1000);
-		const currentTime = msToTime(time);
-
-		console.log('elapsedTime', this.state.elapsedTime, 'time', time);
 		const { statContainerStyle, textStyle } = styles;
+
 		return (
 			<View>
 				<Card style={{ marginTop: 0 }}>
 					<CardSection style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 						<View style={statContainerStyle}>
 							<Text style={textStyle}>Time</Text>
-							<Text style={textStyle}>{currentTime}</Text>
+							<Text style={textStyle}>{msToTime(time)}</Text>
 						</View>
 						<View style={statContainerStyle}>
 							<Text style={textStyle}>Distance</Text>
