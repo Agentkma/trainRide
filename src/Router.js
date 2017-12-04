@@ -16,9 +16,24 @@ const RouterComponent = () => (
 				<Scene hideNavBar key="splash" component={Splash} />
 				<Scene hideNavBar key="login" component={LoginForm} title="Please Log In" />
 			</Scene>
-			<Scene hideNavBar key="main" tabs>
-				<Scene hideNavBar tabs initial key="TrackRide" component={TrackRide} />
-				<Scene hideNavBar tabs key="Profile" component={UserProfileEdit} />
+			<Scene key="main" tabs>
+				<Scene
+					tabs
+					initial
+					title="Track Your Ride"
+					key="TrackRide"
+					component={TrackRide}
+					rightTitle="Profile"
+					onRight={() => Actions.Profile()}
+				/>
+				<Scene
+					tabs
+					title="Profile"
+					key="Profile"
+					component={UserProfileEdit}
+					leftTitle="Track"
+					onLeft={() => Actions.TrackRide()}
+				/>
 			</Scene>
 		</Scene>
 	</Router>

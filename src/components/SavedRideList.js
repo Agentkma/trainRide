@@ -3,12 +3,12 @@ import { ListView, Text } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
-import { employeesFetch } from '../actions';
+import { userRideFetch } from '../actions';
 import ListItem from './ListItem.js';
 
-class EmployeeList extends Component {
+class SavedRideList extends Component {
 	componentWillMount() {
-		this.props.employeesFetch();
+		this.props.userRideFetch();
 		this.createDataSource(this.props);
 	}
 
@@ -16,17 +16,17 @@ class EmployeeList extends Component {
 		this.createDataSource(nextProps);
 	}
 
-	createDataSource({ employees }) {
+	createDataSource({ rides }) {
 		const ds = new ListView.DataSource({
 			rowHasChanged: (r1, r2) => r1 !== r2
 		});
 		//TODO NOT GETTING EMPLOYEES FROM FIREBASE
-		console.log('employees', employees);
-		this.dataSource = ds.cloneWithRows(employees);
+		console.log('rides', rides);
+		this.dataSource = ds.cloneWithRows(rides);
 	}
 
-	renderRow(employee) {
-		return <ListItem employee={employee} />;
+	renderRow(rides) {
+		return <ListItem rides={rides} />;
 	}
 
 	render() {
@@ -37,9 +37,9 @@ class EmployeeList extends Component {
 }
 
 const mapStateToProps = state => {
-	const employees = _.map(state.employees, (val, uid) => ({ ...val, uid }));
+	const rides = _.map(state.rides, (val, uid) => ({ ...val, uid }));
 
-	return { employees };
+	return { rides };
 };
 
-export default connect(mapStateToProps, { employeesFetch })(EmployeeList);
+export default connect(mapStateToProps, { userRideFetch })(SavedRideList);

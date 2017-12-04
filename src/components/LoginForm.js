@@ -53,6 +53,7 @@ class LoginForm extends Component {
 				<Card>
 					<CardSection>
 						<Input
+							autoFocus
 							label="Email"
 							placeholder="email@email.com"
 							onChangeText={this.onEmailChange.bind(this)}

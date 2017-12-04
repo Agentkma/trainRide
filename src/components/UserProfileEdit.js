@@ -7,6 +7,7 @@ import Communications from 'react-native-communications';
 import { Card, CardSection, Button, Confirm } from './common';
 import { userUpdate, userSave, userDelete } from '../actions';
 import UserProfileForm from './UserProfileForm';
+import SavedRideList from './SavedRideList';
 
 class UserProfileEdit extends Component {
 	constructor(props) {
@@ -58,12 +59,11 @@ class UserProfileEdit extends Component {
 				<CardSection>
 					<Button onPress={this.onButtonPress.bind(this)}>Save Changes</Button>
 				</CardSection>
+
 				<CardSection>
-					<Button onPress={this.onTextPress.bind(this)}>Text Schedule</Button>
-				</CardSection>
-				<CardSection>
+					<SavedRideList />
 					<Button onPress={() => this.setState({ showModal: !this.state.showModal })}>
-						Fire Employee
+						Delete
 					</Button>
 				</CardSection>
 				{this.confirmModal()}
@@ -72,10 +72,10 @@ class UserProfileEdit extends Component {
 	}
 }
 
-// state or destructured state of {user}  comes from key names from reducers/index.js file
+// state or destructured state of {userProfile}  comes from key names from reducers/index.js file
 
-const mapStateToProps = ({ user }) => {
-	const { name, location, bio, gear } = user;
+const mapStateToProps = ({ userProfile }) => {
+	const { name, location, bio, gear } = userProfile;
 
 	return {
 		name,
