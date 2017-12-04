@@ -19,24 +19,12 @@ class TrackRide extends Component {
 
 	// lifecycle events
 	componentDidMount() {
-		this.interval = setInterval(this.onTick);
+		this.interval = setInterval(this.onTick.bind(this));
 	}
 
-	onStart() {
-		this.onTick();
-		this.setState({
-			timeRunning: true,
-			previousTime: Date.now()
-		});
+	componentWillUnmount() {
+		clearInterval(this.interval);
 	}
-	onPause() {
-		this.onTick();
-		this.setState({
-			timeRunning: false,
-			previousTime: Date.now()
-		});
-	}
-	onEnd() {}
 
 	onTick() {
 		if (this.state.timeRunning) {
@@ -47,16 +35,52 @@ class TrackRide extends Component {
 			});
 		}
 	}
+
+	onStart() {
+		this.onTick.bind(this);
+		this.setState({
+			timeRunning: true,
+			previousTime: Date.now()
+		});
+	}
+	onPause() {
+		this.onTick.bind(this);
+		this.setState({
+			timeRunning: false,
+			previousTime: Date.now()
+		});
+	}
+	onEnd() {
+		// call action creator to save elapsedTime to to totalTime
+		this.props.userTrackUpdate({ trackTimeTotal: this.state.elapsedTime });
+		console.log('trackTimeTotal', this.props.trackTimeTotal);
+	}
+
 	renderBtnStartOrPause() {
-		return this.props.timeRunning ? (
-			<Button onPress={this.onPause}>Pause</Button>
+		return this.state.timeRunning ? (
+			<Button onPress={this.onPause.bind(this)}>Pause</Button>
 		) : (
-			<Button onPress={this.onStart}>Start</Button>
+			<Button onPress={this.onStart.bind(this)}>Start</Button>
 		);
 	}
 
 	render() {
-		const time = Math.floor(this.props.trackTime / 1000);
+		//TODO function not working prop
+		function msToTime(duration) {
+			let seconds = parseInt((duration / 1000) % 60);
+			let minutes = parseInt((duration / (1000 * 60)) % 60);
+			let hours = parseInt((duration / (1000 * 60 * 60)) % 24);
+
+			hours = hours < 10 ? `0${hours}` : hours;
+			minutes = minutes < 10 ? `0${minutes}` : minutes;
+			seconds = seconds < 10 ? `0${seconds}` : seconds;
+
+			return `${hours}:${minutes}:${seconds}`;
+		}
+		const time = Math.floor(this.state.elapsedTime / 1000);
+		const currentTime = msToTime(time);
+
+		console.log('elapsedTime', this.state.elapsedTime, 'time', time);
 		const { statContainerStyle, textStyle } = styles;
 		return (
 			<View>
@@ -64,7 +88,7 @@ class TrackRide extends Component {
 					<CardSection style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 						<View style={statContainerStyle}>
 							<Text style={textStyle}>Time</Text>
-							<Text style={textStyle}>{time}</Text>
+							<Text style={textStyle}>{currentTime}</Text>
 						</View>
 						<View style={statContainerStyle}>
 							<Text style={textStyle}>Distance</Text>
@@ -79,7 +103,7 @@ class TrackRide extends Component {
 					</CardSection>
 					<CardSection style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 						{this.renderBtnStartOrPause()}
-						<Button onPress={this.onEnd}>END</Button>
+						<Button onPress={this.onEnd.bind(this)}>END</Button>
 					</CardSection>
 				</Card>
 			</View>

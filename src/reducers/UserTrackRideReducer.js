@@ -17,7 +17,6 @@ export default (state = INITIAL_STATE, action) => {
 			// action.payload will be like { prop: "name", value: "Jane"}
 			//[action.payload.prop] is ES6 key interpolation
 			return { ...state, [action.payload.prop]: action.payload.value };
-
 		default:
 			return state;
 	}
