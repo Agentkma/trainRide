@@ -6,7 +6,7 @@ import { FlatList } from 'react-native';
 import Axios from 'axios';
 
 //Import child components
-import ListItem from './common';
+import ListItem from './ListItem';
 
 //create component
 //props holds values passed in from parent App / root component

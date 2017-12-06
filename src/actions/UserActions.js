@@ -16,7 +16,7 @@ export const userUpdate = ({ prop, value }) => ({
 
 //TODO COMPLETE RIDE CREATION action creator
 export const userRideCreate = ({
-	trackTime,
+	trackTimeTotal,
 	trackAvgSpeed,
 	trackDistance,
 	trackAvgPower,

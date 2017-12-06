@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { WebView } from 'react-native';
+import { WebView, Text } from 'react-native';
 import WebFiles from '../webView/index.html';
 
 // onMessage() in WebView allows bi directional data flow to web files and react-native
@@ -46,9 +46,8 @@ const styles = {
 		justifyContent: 'center',
 		alignItems: 'center',
 		flex: 1,
-		marginTop: 5,
-		height: 200,
-		width: 200
+		height: '100%',
+		width: '100%'
 	}
 };
 

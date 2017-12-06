@@ -22,7 +22,7 @@ const Splash = () => {
 	return (
 		<ImageBackground source={splashImage} style={imageStyle}>
 			<View style={headerContainerStyle}>
-				<Text style={headerTextStyle}>trainRide</Text>
+				<Text style={headerTextStyle}>terraGo</Text>
 				<Text style={subHeaderTextStyle}>easy training analytics</Text>
 			</View>
 			<View style={buttonContainerStyle}>

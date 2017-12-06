@@ -6,7 +6,9 @@ const INITIAL_STATE = {
 	trackDistance: 23.4,
 	trackAvgPower: 89,
 	trackAvgCadence: 65,
-	trackAvgHeartRate: 105
+	trackAvgHeartRate: 105,
+	title: '',
+	notes: ''
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -18,7 +20,7 @@ export default (state = INITIAL_STATE, action) => {
 			//[action.payload.prop] is ES6 key interpolation
 			return { ...state, [action.payload.prop]: action.payload.value };
 		case USER_RIDE_CREATE:
-			return { ...state };
+			return state;
 		default:
 			return state;
 	}

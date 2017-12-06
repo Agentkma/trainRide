@@ -222,6 +222,8 @@ const styles = {
 	}
 };
 
+// state or destructured state of {userTrackRide}  comes from key names from reducers/index.js file
+
 const mapStateToProps = ({ userTrackRide }) => {
 	const {
 		trackTimeTotal,

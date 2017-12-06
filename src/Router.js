@@ -7,9 +7,6 @@ import TrackRide from './components/TrackRide.js';
 import UserProfileEdit from './components/UserProfileEdit.js';
 import RideSummaryData from './components/RideSummaryData.js';
 
-// import EmployeeList from './components/EmployeeList.js';
-// import EmployeeCreate from './components/EmployeeCreate.js';
-
 const RouterComponent = () => (
 	<Router sceneStyle={{ paddingTop: 10 }}>
 		<Scene key="root" hideNavBar>

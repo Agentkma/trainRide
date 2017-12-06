@@ -8,11 +8,7 @@ $(document).ready(() => {
 		mode: 'cors',
 		cache: 'default'
 	};
-	let mymap;
-	let map;
-	const zoom = 12.5;
-	const startCoord = [];
-	const allCoords = [];
+
 	const $chart = $('#chart');
 	const $chartAvg = $('#chartAvg');
 	const powerChartOpts = {
@@ -90,13 +86,7 @@ $(document).ready(() => {
 	let powerData = [];
 
 	let rideData;
-	let circleMarker;
-	const circleOptions = {
-		color: 'blue',
-		weight: 3,
-		opacity: 0.5,
-		smoothFactor: 1
-	};
+
 	let maxPowerAvg20 = 0;
 	let maxPowerAvg15 = 0;
 	let maxPowerAvg10 = 0;
@@ -116,74 +106,12 @@ $(document).ready(() => {
 		const response = await fetch(jsonAPI, fetchInit);
 		const json = await response.json();
 		rideData = json.samples;
-		createMap();
-		initMap();
-		addRouteToMap();
-		createPathOverlay();
 		getChartData();
 		createPowerChart();
 		getPowerData();
 		getHighestAvgPower();
 		createAvgPowerChart();
 	};
-
-	function createMap() {
-		//find first lat/long in sample set
-		const start = rideData.find(start => start.values.positionLat);
-		startCoord.push(start.values.positionLat, start.values.positionLong);
-	}
-
-	function initMap() {
-		//TODO map not showing up now...
-		// mymap = L.map('map').setView(startCoord, zoom);
-
-		map = L.map('map').fitWorld();
-
-		L.tileLayer(
-			'https://api.tiles.mapbox.com/v4/MapID/997/256/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoia2V2aW5hbmRlcnNvbjM3MDAiLCJhIjoiY2o5dm5xd3RhNHZ2dzJ3cGc5dGUzY3JlZSJ9.BUbC3QUrC3upErov18ukEQ',
-			{
-				attribution:
-					'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-				maxZoom: 18
-			}
-		).addTo(map);
-
-		/* Add Tile Layer to Map */
-		// L.tileLayer(
-		// 	'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoia2V2aW5hbmRlcnNvbjM3MDAiLCJhIjoiY2o5dm5xd3RhNHZ2dzJ3cGc5dGUzY3JlZSJ9.BUbC3QUrC3upErov18ukEQ',
-		// 	{
-		// 		attribution:
-		// 			'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-		// 		maxZoom: 18,
-		// 		id: 'mapbox.streets',
-		// 		accessToken:
-		// 			'pk.eyJ1Ijoia2V2aW5hbmRlcnNvbjM3MDAiLCJhIjoiY2o5dm5xd3RhNHZ2dzJ3cGc5dGUzY3JlZSJ9.BUbC3QUrC3upErov18ukEQ'
-		// 	}
-		// ).addTo(mymap);
-		map.locate({ setView: true, maxZoom: 16 });
-	}
-
-	function addRouteToMap() {
-		rideData.forEach(sample => {
-			if (sample.values.positionLat) {
-				allCoords.push([sample.values.positionLat, sample.values.positionLong]);
-			}
-		});
-	}
-
-	function createPathOverlay() {
-		// create a red polyline from an array of LatLng points
-		const latlngs = allCoords;
-
-		const polyline = L.polyline(latlngs, {
-			color: 'red',
-			weight: 3,
-			opacity: 0.5,
-			smoothFactor: 1
-		}).addTo(mymap);
-		// zoom the map to the polyline
-		mymap.fitBounds(polyline.getBounds());
-	}
 
 	function getChartData() {
 		rideData.forEach(dataPoint => {
