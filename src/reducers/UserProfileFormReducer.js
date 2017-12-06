@@ -7,8 +7,9 @@ import {
 
 const INITIAL_STATE = {
 	name: '',
-	phone: '',
-	shift: ''
+	location: '',
+	bio: '',
+	gear: ''
 };
 
 export default (state = INITIAL_STATE, action) => {

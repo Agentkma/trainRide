@@ -39,7 +39,7 @@ class LoginForm extends Component {
 		}
 		return <Button onPress={this.onButtonPress.bind(this)}>Log In</Button>;
 	}
-	//TODO change email and password back to this.props.email  & this.props.password
+
 	render() {
 		const {
 			headerContainerStyle,
@@ -53,6 +53,7 @@ class LoginForm extends Component {
 				<Card>
 					<CardSection>
 						<Input
+							autoFocus
 							label="Email"
 							placeholder="email@email.com"
 							onChangeText={this.onEmailChange.bind(this)}

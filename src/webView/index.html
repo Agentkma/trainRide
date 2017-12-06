@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>trainRide | live to progress</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles-->
+    <link href="./style.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <section>
+      <div class="container p-3">
+        <div class="row align-items-center">
+          <div class="col-12 col-md-6 pb-3" >
+              <h4>Power Output</h4>
+              <div id="chartAvg">
+              </div>
+              
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Bootstrap & core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/flot/jquery.flot.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+  window.postMessage('Sending data from WebView', { message: 'data' });
+document.addEventListener('message', data => {
+	alert(data.data);
+});
+window.addEventListener('message', data => {
+	alert(data.data);
+});
+</script>
+
+  </body>
+
+</html>

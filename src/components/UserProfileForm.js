@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 
-import { CardSection, Input } from './common';
+import { CardSection, Input, TextAreaInput } from './common';
 import { userUpdate } from '../actions';
 
 class UserProfileForm extends Component {
@@ -27,16 +27,16 @@ class UserProfileForm extends Component {
 				</CardSection>
 
 				<CardSection>
-					<Input
+					<TextAreaInput
 						label="Bio"
-						placeholder="910.800.8000"
+						placeholder="describe yourself..."
 						value={this.props.bio}
 						onChangeText={value => this.props.userUpdate({ prop: 'bio', value })}
 					/>
 				</CardSection>
 
 				<CardSection>
-					<Input
+					<TextAreaInput
 						label="Gear"
 						placeholder="Bike. Helmet. Etc."
 						value={this.props.gear}
@@ -49,14 +49,13 @@ class UserProfileForm extends Component {
 }
 
 // const styles = {
-// 	pickerLabelStyle: {
-// 		fontSize: 18,
-// 		paddingLeft: 20
+// 	inputBioStyle: {
+// 		height: 100
 // 	}
 // };
 
-const mapStateToProps = ({ user }) => {
-	const { name, location, bio, gear } = user;
+const mapStateToProps = ({ userProfile }) => {
+	const { name, location, bio, gear } = userProfile;
 
 	return {
 		name,

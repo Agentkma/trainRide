@@ -1,0 +1,21 @@
+/*!
+ * Start Bootstrap - One Page Wonder (https://startbootstrap.com/template-overviews/one-page-wonder)
+ * Copyright 2013-2017 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-one-page-wonder/blob/master/LICENSE)
+ */
+
+body {
+	padding: 0;
+	margin: 0;
+}
+
+html,
+body {
+	height: 100vh;
+	width: 100vw;
+}
+
+#chartAvg {
+	width: auto;
+	height: 100vh;
+}
