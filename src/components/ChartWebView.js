@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import { WebView } from 'react-native';
-import mapWebView from '../webView/index.html';
-
-//TODO get map/charts to show up
-//webView requires html to loaded as string
+import WebFiles from '../webView/index.html';
 
 // onMessage() in WebView allows bi directional data flow to web files and react-native
-class MyWebMap extends Component {
+class ChartWebView extends Component {
 	// constructor(props) {
 	// 	super(props);
 	// 	this.webview.postMessage('Hello from RN');
@@ -31,8 +28,8 @@ class MyWebMap extends Component {
 		return (
 			<WebView
 				ref="webview"
-				onMessage={this.onMessage}
-				source={mapWebView}
+				onMessage={event => console.log(event.nativeEvent.data)}
+				source={WebFiles}
 				style={webViewStyle}
 				startInLoadingState
 				javaScriptEnabled
@@ -50,8 +47,9 @@ const styles = {
 		alignItems: 'center',
 		flex: 1,
 		marginTop: 5,
-		height: '60%'
+		height: 200,
+		width: 200
 	}
 };
 
-export default MyWebMap;
+export default ChartWebView;

@@ -39,7 +39,7 @@ class LoginForm extends Component {
 		}
 		return <Button onPress={this.onButtonPress.bind(this)}>Log In</Button>;
 	}
-	//TODO change email and password back to this.props.email  & this.props.password
+
 	render() {
 		const {
 			headerContainerStyle,

@@ -9,6 +9,7 @@ $(document).ready(() => {
 		cache: 'default'
 	};
 	let mymap;
+	let map;
 	const zoom = 12.5;
 	const startCoord = [];
 	const allCoords = [];
@@ -133,20 +134,33 @@ $(document).ready(() => {
 	}
 
 	function initMap() {
-		mymap = L.map('map').setView(startCoord, zoom);
+		//TODO map not showing up now...
+		// mymap = L.map('map').setView(startCoord, zoom);
 
-		/* Add Tile Layer to Map */
+		map = L.map('map').fitWorld();
+
 		L.tileLayer(
-			'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoia2V2aW5hbmRlcnNvbjM3MDAiLCJhIjoiY2o5dm5xd3RhNHZ2dzJ3cGc5dGUzY3JlZSJ9.BUbC3QUrC3upErov18ukEQ',
+			'https://api.tiles.mapbox.com/v4/MapID/997/256/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoia2V2aW5hbmRlcnNvbjM3MDAiLCJhIjoiY2o5dm5xd3RhNHZ2dzJ3cGc5dGUzY3JlZSJ9.BUbC3QUrC3upErov18ukEQ',
 			{
 				attribution:
 					'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-				maxZoom: 18,
-				id: 'mapbox.streets',
-				accessToken:
-					'pk.eyJ1Ijoia2V2aW5hbmRlcnNvbjM3MDAiLCJhIjoiY2o5dm5xd3RhNHZ2dzJ3cGc5dGUzY3JlZSJ9.BUbC3QUrC3upErov18ukEQ'
+				maxZoom: 18
 			}
-		).addTo(mymap);
+		).addTo(map);
+
+		/* Add Tile Layer to Map */
+		// L.tileLayer(
+		// 	'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoia2V2aW5hbmRlcnNvbjM3MDAiLCJhIjoiY2o5dm5xd3RhNHZ2dzJ3cGc5dGUzY3JlZSJ9.BUbC3QUrC3upErov18ukEQ',
+		// 	{
+		// 		attribution:
+		// 			'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+		// 		maxZoom: 18,
+		// 		id: 'mapbox.streets',
+		// 		accessToken:
+		// 			'pk.eyJ1Ijoia2V2aW5hbmRlcnNvbjM3MDAiLCJhIjoiY2o5dm5xd3RhNHZ2dzJ3cGc5dGUzY3JlZSJ9.BUbC3QUrC3upErov18ukEQ'
+		// 	}
+		// ).addTo(mymap);
+		map.locate({ setView: true, maxZoom: 16 });
 	}
 
 	function addRouteToMap() {
@@ -188,7 +202,9 @@ $(document).ready(() => {
 			}
 			if (item) {
 				// use item.datapoint to highlight the gps map
-				const clickData = rideData.find(location => location.values.power === item.datapoint[1]);
+				const clickData = rideData.find(
+					location => location.values.power === item.datapoint[1]
+				);
 
 				const latlngs = [clickData.values.positionLat, clickData.values.positionLong];
 
@@ -202,7 +218,7 @@ $(document).ready(() => {
 			if (data.values.power === undefined) {
 				return (data.values.power = 0);
 			}
-				return data.values.power;
+			return data.values.power;
 		});
 	}
 	function getHighestAvgPower() {

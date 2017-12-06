@@ -21,20 +21,16 @@ export const userRideCreate = ({
 	trackDistance,
 	trackAvgPower,
 	trackAvgCadence,
-	trackAvgHeartRate
+	trackAvgHeartRate,
+	title,
+	notes
 }) => {
 	const { currentUser } = firebase.auth();
+	//${currentUser.uid}
 	//return object to satisfy ReduxThunk rules
-	//pass {type:'reset'} to employeList() so no "Back" arrow appears in header
+	//pass {type:'reset'} to Actions.componentKeyName() so no "Back" arrow appears in header
 	return dispatch => {
-		firebase
-			.database()
-			.ref(`/users/${currentUser.uid}/employees`)
-			.push({ name, phone, shift })
-			.then(() => {
-				dispatch({ type: USER_RIDE_CREATE });
-				Actions.main({ type: 'reset' });
-			});
+		//insert into mongo db
 	};
 };
 
@@ -47,21 +43,6 @@ export const userRideFetch = () => {
 		// 	.on('value', snapshot => {
 		// 		console.log('snapshot', snapshot);
 		// 		dispatch({ type: USER_RIDE_FETCH_SUCCESS, payload: snapshot.val() });
-		// 	});
-	};
-};
-
-export const userRideSave = ({ name, phone, shift, uid }) => {
-	const { currentUser } = firebase.auth();
-
-	return dispatch => {
-		// firebase
-		// 	.database()
-		// 	.ref(`/users/${currentUser.uid}/employees/${uid}`)
-		// 	.set({ name, phone, shift })
-		// 	.then(() => {
-		// 		dispatch({ type: USER_RIDE_SAVE_SUCCESS });
-		// 		Actions.employeeList({ type: 'reset' });
 		// 	});
 	};
 };

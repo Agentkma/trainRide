@@ -1,12 +1,12 @@
-import { USER_RIDE_FETCH_SUCCESS, USER_TRACK_UPDATE } from '../actions/types.js';
+import { USER_RIDE_CREATE, USER_RIDE_FETCH_SUCCESS, USER_TRACK_UPDATE } from '../actions/types.js';
 
 const INITIAL_STATE = {
-	trackTimeTotal: 0,
-	trackAvgSpeed: 0,
-	trackDistance: 0,
-	trackAvgPower: 0,
-	trackAvgCadence: 0,
-	trackAvgHeartRate: 0
+	trackTimeTotal: '00:58:01',
+	trackAvgSpeed: 12.2,
+	trackDistance: 23.4,
+	trackAvgPower: 89,
+	trackAvgCadence: 65,
+	trackAvgHeartRate: 105
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -17,6 +17,8 @@ export default (state = INITIAL_STATE, action) => {
 			// action.payload will be like { prop: "name", value: "Jane"}
 			//[action.payload.prop] is ES6 key interpolation
 			return { ...state, [action.payload.prop]: action.payload.value };
+		case USER_RIDE_CREATE:
+			return { ...state };
 		default:
 			return state;
 	}
