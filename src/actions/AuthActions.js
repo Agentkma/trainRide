@@ -49,6 +49,8 @@ const loginUserSuccess = (dispatch, user) => {
 		type: USER_LOGIN_SUCCESS,
 		payload: user
 	});
+	const userId = firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
+	console.log('user token', userId);
 
 	//user react-native-router-flux to nav to correct screen/scene
 	// key property of scene is used as method on Actions

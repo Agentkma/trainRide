@@ -1,20 +1,112 @@
 import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
+//Axios used for http request related tasks
+import Axios from 'axios';
 
 import {
-	USER_PROFILE,
+	USER_PROFILE_CREATE,
+	USER_PROFILE_READ,
+	USER_PROFILE_UPDATE,
 	USER_RIDE_CREATE,
-	USER_RIDE_FETCH_SUCCESS,
-	USER_RIDE_SAVE_SUCCESS,
+	USER_RIDE_READ,
 	USER_TRACK_UPDATE
 } from './types.js';
+///TODO add USER_PROFILE_FETCH action creator and call it when user
+//updates profile....when they navigate away
+// TODO call USER_RIDE_FETCH_SUCCESS when user log's in
+
+const dbURL = 'https://shrouded-sea-51852.herokuapp.com';
+
+export const userCreate = ({ name, bio, location }) => {
+	const userId = firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
+	console.log('user token', userId);
+
+	return dispatch => {
+		//insert into mongo db
+		Axios.post({
+			method: 'post',
+			url: `${dbURL}/user`,
+			data: {
+				name,
+				bio,
+				location
+			},
+			auth: {
+				userId
+			}
+		})
+			.then(response => {
+				console.log(response);
+				dispatch({ type: USER_PROFILE_CREATE });
+				Actions.main();
+				// Actions.Profile({ type: 'reset' })
+			})
+			.catch(error => {
+				console.log(error);
+			});
+	};
+};
+
+export const userProfileUpdate = ({ name, bio, location }) => {
+	const userId = firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
+	console.log('user token', userId);
+
+	return dispatch => {
+		//insert into mongo db
+		Axios.put({
+			method: 'post',
+			url: `${dbURL}/user`,
+			data: {
+				name,
+				bio,
+				location
+			},
+			auth: {
+				userId
+			}
+		})
+			.then(response => {
+				console.log(response);
+				dispatch({ type: USER_PROFILE_UPDATE });
+				Actions.main();
+				// Actions.Profile({ type: 'reset' })
+			})
+			.catch(error => {
+				console.log(error);
+			});
+	};
+};
+
+export const userProfileFetch = () => {
+	const userId = firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
+	return dispatch => {
+		//get profile from mongo db
+
+		Axios.get({
+			method: 'get',
+			url: `${dbURL}/user`,
+			auth: {
+				userId
+			}
+		})
+			.then(response => {
+				console.log(response);
+				dispatch({
+					type: USER_PROFILE_READ,
+					payload: response.data
+				});
+			})
+			.catch(error => {
+				console.log(error);
+			});
+	};
+};
 
 export const userUpdate = ({ prop, value }) => ({
-	type: USER_PROFILE,
+	type: USER_PROFILE_UPDATE,
 	payload: { prop, value }
 });
 
-//TODO COMPLETE RIDE CREATION action creator
 export const userRideCreate = ({
 	trackTimeTotal,
 	trackAvgSpeed,
@@ -25,39 +117,94 @@ export const userRideCreate = ({
 	title,
 	notes
 }) => {
-	const { currentUser } = firebase.auth();
-	//${currentUser.uid}
-	//return object to satisfy ReduxThunk rules
+	const userId = firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
+
+	//return object or use dispatch to satisfy ReduxThunk rules
 	//pass {type:'reset'} to Actions.componentKeyName() so no "Back" arrow appears in header
+
 	return dispatch => {
 		//insert into mongo db
+
+		Axios.post({
+			method: 'post',
+			url: `${dbURL}/user`,
+			data: {
+				trackTimeTotal,
+				trackAvgSpeed,
+				trackDistance,
+				trackAvgPower,
+				trackAvgCadence,
+				trackAvgHeartRate,
+				title,
+				notes
+			},
+			auth: {
+				userId
+			}
+		})
+			.then(response => {
+				console.log(response);
+				dispatch({ type: USER_RIDE_CREATE });
+				Actions.main();
+				// Actions.Profile({ type: 'reset' })
+			})
+			.catch(error => {
+				console.log(error);
+			});
 	};
 };
 
 export const userRideFetch = () => {
-	const { currentUser } = firebase.auth();
+	const userId = firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
 	return dispatch => {
-		// firebase
-		// 	.database()
-		// 	.ref(`/users/${currentUser.uid}/employees`)
-		// 	.on('value', snapshot => {
-		// 		console.log('snapshot', snapshot);
-		// 		dispatch({ type: USER_RIDE_FETCH_SUCCESS, payload: snapshot.val() });
-		// 	});
+		//get rides from mongo db
+
+		Axios.get({
+			method: 'get',
+			url: `${dbURL}/ride`,
+			auth: {
+				userId
+			}
+		})
+			.then(response => {
+				//TODO response is array of bike ride objects
+				console.log(response);
+				dispatch({
+					type: USER_RIDE_READ,
+					payload: response.data
+				});
+			})
+			.catch(error => {
+				console.log(error);
+			});
 	};
 };
 
-export const userRideDelete = ({ uid }) => {
-	const { currentUser } = firebase.auth();
+export const userRideDelete = ({ _id }) => {
+	const userId = firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
 
-	return () => {
-		// firebase
-		// 	.database()
-		// 	.ref(`/users/${currentUser.uid}/employees/${uid}`)
-		// 	.remove()
-		// 	.then(() => {
-		// 		Actions.employeeList({ type: 'reset' });
-		// 	});
+	return dispatch => {
+		//delete from  mongo db
+
+		Axios.delete({
+			method: 'post',
+			url: `${dbURL}/user/`,
+			params: {
+				id: _id
+			},
+			auth: {
+				userId
+			}
+		})
+			.then(response => {
+				console.log(response);
+				dispatch({ type: USER_RIDE_CREATE });
+				Actions.main();
+				// Actions.Profile({ type: 'reset' })
+			})
+			.catch(error => {
+				console.log(error);
+			});
 	};
 };
 

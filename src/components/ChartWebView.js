@@ -11,10 +11,10 @@ class ChartWebView extends Component {
 	// this.webview.postMessage('Hello from RN');
 
 	onError() {
-		console.log('did not load');
+		// console.log('did not load');
 	}
 	onLoad() {
-		console.log('loaded');
+		// console.log('loaded');
 	}
 
 	onMessage(data) {

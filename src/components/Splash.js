@@ -4,7 +4,7 @@ import { Text, View, ImageBackground } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 
 //Import child components
-import { Card, CardSection, Button } from './common';
+import { Button } from './common';
 
 const splashImage = require('../img/splash.jpg');
 
@@ -17,13 +17,12 @@ const Splash = () => {
 		headerTextStyle,
 		subHeaderTextStyle
 	} = styles;
-	// TODO  add opacity to button...below not working
 
 	return (
 		<ImageBackground source={splashImage} style={imageStyle}>
 			<View style={headerContainerStyle}>
-				<Text style={headerTextStyle}>terraGo</Text>
-				<Text style={subHeaderTextStyle}>easy training analytics</Text>
+				<Text style={headerTextStyle}>terraGO</Text>
+				<Text style={subHeaderTextStyle}>ride, track, review </Text>
 			</View>
 			<View style={buttonContainerStyle}>
 				<Button
@@ -46,7 +45,7 @@ const styles = {
 		backgroundColor: 'rgba(0, 0, 0, 0.85)'
 	},
 	headerTextStyle: {
-		fontSize: 36,
+		fontSize: 48,
 		fontWeight: '600',
 		color: 'red',
 		flexDirection: 'row',

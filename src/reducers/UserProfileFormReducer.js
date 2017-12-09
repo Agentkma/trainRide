@@ -1,29 +1,23 @@
-import {
-	USER_UDATE,
-	USER_CREATE,
-	USER_RIDE_FETCH_SUCCESS,
-	USERS_RIDE_SAVE_SUCCESS
-} from '../actions/types.js';
+import { USER_PROFILE_CREATE, USER_PROFILE_READ, USER_PROFILE_UPDATE } from '../actions/types.js';
 
 const INITIAL_STATE = {
 	name: '',
 	location: '',
 	bio: '',
-	gear: ''
+	gear: '',
+	_id: ''
 };
 
 export default (state = INITIAL_STATE, action) => {
 	switch (action.type) {
-		case USER_UDATE:
+		case USER_PROFILE_CREATE:
+			return state;
+		case USER_PROFILE_READ:
+			return action.payload;
+		case USER_PROFILE_UPDATE:
 			// action.payload will be like { prop: "name", value: "Jane"}
 			//[action.payload.prop] is ES6 key interpolation
 			return { ...state, [action.payload.prop]: action.payload.value };
-		case USER_CREATE:
-			return { ...state, ...INITIAL_STATE };
-		case USER_RIDE_FETCH_SUCCESS:
-			return { ...state, ...INITIAL_STATE };
-		case USERS_RIDE_SAVE_SUCCESS:
-			return { ...state, ...INITIAL_STATE };
 		default:
 			return state;
 	}

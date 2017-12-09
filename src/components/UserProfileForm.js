@@ -34,15 +34,6 @@ class UserProfileForm extends Component {
 						onChangeText={value => this.props.userUpdate({ prop: 'bio', value })}
 					/>
 				</CardSection>
-
-				<CardSection>
-					<TextAreaInput
-						label="Gear"
-						placeholder="Bike. Helmet. Etc."
-						value={this.props.gear}
-						onChangeText={value => this.props.userUpdate({ prop: 'gear', value })}
-					/>
-				</CardSection>
 			</View>
 		);
 	}
@@ -55,13 +46,12 @@ class UserProfileForm extends Component {
 // };
 
 const mapStateToProps = ({ userProfile }) => {
-	const { name, location, bio, gear } = userProfile;
+	const { name, location, bio } = userProfile;
 
 	return {
 		name,
 		location,
-		bio,
-		gear
+		bio
 	};
 };
 

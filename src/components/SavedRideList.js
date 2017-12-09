@@ -20,7 +20,7 @@ class SavedRideList extends Component {
 		const ds = new ListView.DataSource({
 			rowHasChanged: (r1, r2) => r1 !== r2
 		});
-		//TODO NOT GETTING EMPLOYEES FROM FIREBASE
+		//TODO get ride data from heroku / mongoDB
 		console.log('rides', rides);
 		this.dataSource = ds.cloneWithRows(rides);
 	}
