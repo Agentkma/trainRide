@@ -31,13 +31,7 @@ const RouterComponent = () => (
 					onRight={() => Actions.Profile()}
 				/>
 
-				<Scene
-					title="Profile"
-					key="Profile"
-					component={UserProfileEdit}
-					leftTitle="Track"
-					onLeft={() => Actions.TrackRide()}
-				/>
+				<Scene title="Profile" key="Profile" component={UserProfileEdit} />
 			</Scene>
 		</Scene>
 	</Router>

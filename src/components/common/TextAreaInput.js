@@ -9,7 +9,7 @@ const TextAreaInput = ({ label, value, onChangeText, placeholder, secureTextEntr
 			<Text style={labelStyle}>{label}</Text>
 
 			<TextInput
-				multiLine
+				multiline
 				style={inputStyle}
 				value={value}
 				onChangeText={onChangeText}

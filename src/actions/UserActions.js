@@ -8,10 +8,17 @@ import {
 	USER_RIDE_CREATE,
 	USER_RIDE_READ,
 	USER_RIDE_DELETE,
-	USER_TRACK_UPDATE
+	USER_TRACK_UPDATE,
+	USER_SAVED_RIDE_VIEW
 } from './types.js';
 
 const DBurl = 'https://shrouded-sea-51852.herokuapp.com';
+
+function reformatData(response) {
+	const dataObject = {};
+	response.forEach(ride => (dataObject[ride._id] = ride));
+	return dataObject;
+}
 
 export const userCreate = ({ name, bio, location }) => dispatch =>
 	firebase
@@ -148,10 +155,12 @@ export const userRideFetch = () => dispatch =>
 		)
 		.then(response => response.json())
 		.then(response => {
-			console.log('USER_RIDE_READ', response);
+			const formattedReponse = reformatData(response);
+			// console.log('formattedReponse', formattedReponse);
+			// console.log('USER_RIDE_READ', formattedReponse);
 			return dispatch({
 				type: USER_RIDE_READ,
-				payload: response
+				payload: formattedReponse
 			});
 		})
 		.catch(error => {
@@ -183,4 +192,9 @@ export const userRideDelete = _id => dispatch =>
 export const userTrackUpdate = ({ prop, value }) => ({
 	type: USER_TRACK_UPDATE,
 	payload: { prop, value }
+});
+
+export const userSavedRideView = ({ _id }) => ({
+	type: USER_SAVED_RIDE_VIEW,
+	payload: { _id }
 });

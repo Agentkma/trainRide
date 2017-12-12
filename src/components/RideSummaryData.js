@@ -7,8 +7,6 @@ import ChartWebView from './ChartWebView.js';
 import { userRideCreate, userTrackUpdate } from '../actions';
 import { Card, CardSection, Button, Input, TextAreaInput } from './common';
 
-// TODO userTrackUpdate did NOT update store/state
-
 //data = ride data: time, distance, avg speed, avg power, avg cadence,avg heart rate
 class RideSummaryData extends Component {
 	saveRideData() {
@@ -39,11 +37,6 @@ class RideSummaryData extends Component {
 	cancelRideData() {
 		Actions.TrackRide();
 	}
-
-	// rideDataUpdate({ prop, value }) {
-	// 	this.props[prop] = value;
-	// 	console.log(this.props[prop]);
-	// }
 
 	render() {
 		const {

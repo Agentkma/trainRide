@@ -12,3 +12,4 @@ export const USER_RIDE_CREATE = 'user_ride_create';
 export const USER_RIDE_READ = 'user_ride_read';
 export const USER_TRACK_UPDATE = 'user_track_update';
 export const USER_RIDE_DELETE = 'user_ride_delete';
+export const USER_SAVED_RIDE_VIEW = 'user_saved_ride_view';

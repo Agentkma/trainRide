@@ -2,7 +2,8 @@ import {
 	USER_RIDE_CREATE,
 	USER_RIDE_READ,
 	USER_TRACK_UPDATE,
-	USER_RIDE_DELETE
+	USER_RIDE_DELETE,
+	USER_SAVED_RIDE_VIEW
 } from '../actions/types.js';
 
 const INITIAL_STATE = {
@@ -15,7 +16,7 @@ const INITIAL_STATE = {
 	title: '',
 	notes: '',
 	_id: '',
-	rides: []
+	rides: {}
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -30,6 +31,11 @@ export default (state = INITIAL_STATE, action) => {
 			return { ...state, rides: action.payload };
 		case USER_RIDE_DELETE:
 			return state;
+		case USER_SAVED_RIDE_VIEW:
+			return {
+				...state,
+				rides: action.payload
+			};
 		default:
 			return state;
 	}

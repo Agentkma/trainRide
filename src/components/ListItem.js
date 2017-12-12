@@ -18,11 +18,9 @@ class ListItem extends Component {
 	}
 
 	onAccept() {
-		const id = this.props.ride[1];
+		const id = this.props.ride._id;
 		this.props.userRideDelete(id);
-		this.props.userRideFetch();
 		this.setState({ showModal: false });
-		Actions.refresh();
 	}
 
 	onDecline() {
@@ -43,12 +41,16 @@ class ListItem extends Component {
 		this.setState({ showModal: true });
 	}
 
-	viewRideStats() {}
+	viewRideStats() {
+		//TODO need an action creator that will take in the id of the ride and then set the state to equal this ride data.
+		//then nav to teh RideSummaryData
+	}
 
 	render() {
 		const { rowStyle, titleStyle, iconContainerStyle, iconImageStyle } = styles;
 
-		const title = this.props.ride[0];
+		const title = this.props.ride.title;
+		console.log('this.props.ride', this.props.ride);
 
 		return (
 			<View style={rowStyle}>
