@@ -158,13 +158,13 @@ export const userRideFetch = () => dispatch =>
 			console.log(error);
 		});
 
-export const userRideDelete = ({ _id }) => dispatch =>
+export const userRideDelete = _id => dispatch =>
 	firebase
 		.auth()
 		.currentUser.getIdToken(/* forceRefresh */ true)
 		.then(userIdToken => {
 			//delete from  mongo db
-			fetch(`${DBurl}/user/${_id}`, {
+			fetch(`${DBurl}/ride/${_id}`, {
 				method: 'delete',
 				headers: new Headers({
 					Authorization: userIdToken,
@@ -174,8 +174,6 @@ export const userRideDelete = ({ _id }) => dispatch =>
 		})
 		.then(response => {
 			console.log('USER_RIDE_DELETE', response);
-			Actions.main();
-			// Actions.Profile({ type: 'reset' })
 			return dispatch({ type: USER_RIDE_DELETE });
 		})
 		.catch(error => {

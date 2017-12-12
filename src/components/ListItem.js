@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, Image } from 'react-native';
+import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 
 import { CardSection, Confirm } from './common';
-import { userRideDelete } from '../actions';
+import { userRideDelete, userRideFetch } from '../actions';
 
 const viewIcon = require('../img/icon_pageview_1x.png');
 const deleteIcon = require('../img/icon_delete_1x.png');
@@ -16,12 +16,13 @@ class ListItem extends Component {
 			showModal: false
 		};
 	}
-	//TODO how can i get _id from the rides array of ride objects?
+
 	onAccept() {
-		const { _id } = this.props;
-		this.props.userRideDelete({ _id });
-		Actions.main();
-		// Actions.Profile();
+		const id = this.props.ride[1];
+		this.props.userRideDelete(id);
+		this.props.userRideFetch();
+		this.setState({ showModal: false });
+		Actions.refresh();
 	}
 
 	onDecline() {
@@ -38,29 +39,34 @@ class ListItem extends Component {
 		);
 	}
 
-	//
 	deleteRide() {
-		this.confirmModal();
+		this.setState({ showModal: true });
 	}
+
+	viewRideStats() {}
 
 	render() {
 		const { rowStyle, titleStyle, iconContainerStyle, iconImageStyle } = styles;
 
-		const title = this.props.ride;
-		console.log('this.props.ride', this.props.ride);
+		const title = this.props.ride[0];
+
 		return (
 			<View style={rowStyle}>
 				<CardSection>
 					<Text style={titleStyle}>{title}</Text>
 					<View style={iconContainerStyle}>
-						<Image source={viewIcon} style={iconImageStyle} />
-						<Image
-							onPress={this.deleteRide.bind(this)}
-							source={deleteIcon}
-							style={iconImageStyle}
-						/>
+						<TouchableOpacity onPress={this.viewRideStats.bind(this)}>
+							<View style={iconImageStyle}>
+								<Image source={viewIcon} />
+							</View>
+						</TouchableOpacity>
+						<TouchableOpacity onPress={this.deleteRide.bind(this)}>
+							<View style={iconImageStyle}>
+								<Image source={deleteIcon} />
+							</View>
+						</TouchableOpacity>
+						{this.confirmModal()}
 					</View>
-					{this.confirmModal()}
 				</CardSection>
 			</View>
 		);
@@ -72,14 +78,16 @@ const styles = {
 		flex: 1
 	},
 	titleStyle: {
-		fontSize: 18,
+		fontSize: 24,
 		paddingLeft: 5,
 		flex: 3,
 		color: 'black'
 	},
 	iconContainerStyle: {
 		flexDirection: 'row',
-		flex: 1
+		flex: 1,
+		justifyContent: 'space-between',
+		paddingRight: 5
 	},
 	iconImageStyle: {
 		width: '25%',
@@ -87,4 +95,12 @@ const styles = {
 	}
 };
 
-export default ListItem;
+// const mapStateToProps = ({ userTrackRide }) => {
+// 	const { _id } = userTrackRide;
+//
+// 	return {
+// 		_id
+// 	};
+// };
+
+export default connect(null, { userRideDelete, userRideFetch })(ListItem);

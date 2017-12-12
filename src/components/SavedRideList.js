@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { ListView } from 'react-native';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 
 import { userRideFetch } from '../actions';
 import ListItem from './ListItem.js';
@@ -37,7 +36,8 @@ class SavedRideList extends Component {
 const mapStateToProps = ({ userTrackRide }) => {
 	// let { rides } = userTrackRide;
 	let { rides } = userTrackRide;
-	rides = rides.map(ride => ride.title);
+
+	rides = rides.map(ride => [ride.title, ride._id]);
 
 	return { rides };
 };

@@ -7,6 +7,7 @@ const TextAreaInput = ({ label, value, onChangeText, placeholder, secureTextEntr
 	return (
 		<View style={containerStyle}>
 			<Text style={labelStyle}>{label}</Text>
+
 			<TextInput
 				multiLine
 				style={inputStyle}
