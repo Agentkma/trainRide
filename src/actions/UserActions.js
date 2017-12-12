@@ -1,7 +1,5 @@
 import firebase from 'firebase';
 import { Actions } from 'react-native-router-flux';
-//Axios used for http request related tasks
-import Axios from 'axios';
 
 import {
 	USER_PROFILE_CREATE,
@@ -9,98 +7,83 @@ import {
 	USER_PROFILE_UPDATE,
 	USER_RIDE_CREATE,
 	USER_RIDE_READ,
+	USER_RIDE_DELETE,
 	USER_TRACK_UPDATE
 } from './types.js';
-///TODO add USER_PROFILE_FETCH action creator and call it when user
-//updates profile....when they navigate away
-// TODO call USER_RIDE_FETCH_SUCCESS when user log's in
 
-const dbURL = 'https://shrouded-sea-51852.herokuapp.com';
+const DBurl = 'https://shrouded-sea-51852.herokuapp.com';
 
-export const userCreate = ({ name, bio, location }) => {
-	const userId = firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
-	console.log('user token', userId);
-
-	return dispatch => {
-		//insert into mongo db
-		Axios.post({
-			method: 'post',
-			url: `${dbURL}/user`,
-			data: {
-				name,
-				bio,
-				location
-			},
-			auth: {
-				userId
-			}
-		})
-			.then(response => {
-				console.log(response);
-				dispatch({ type: USER_PROFILE_CREATE });
-				Actions.main();
-				// Actions.Profile({ type: 'reset' })
+export const userCreate = ({ name, bio, location }) => dispatch =>
+	firebase
+		.auth()
+		.currentUser.getIdToken(/* forceRefresh */ true)
+		.then(userIdToken =>
+			fetch(`${DBurl}/user`, {
+				method: 'post',
+				headers: new Headers({
+					Authorization: userIdToken,
+					'Content-Type': 'application/json'
+				}),
+				body: JSON.stringify({ name, bio, location })
 			})
-			.catch(error => {
-				console.log(error);
-			});
-	};
-};
-
-export const userProfileUpdate = ({ name, bio, location }) => {
-	const userId = firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
-	console.log('user token', userId);
-
-	return dispatch => {
-		//insert into mongo db
-		Axios.put({
-			method: 'post',
-			url: `${dbURL}/user`,
-			data: {
-				name,
-				bio,
-				location
-			},
-			auth: {
-				userId
-			}
+		)
+		.then(response => {
+			console.log('user create response', response);
+			Actions.main();
+			// Actions.Profile({ type: 'reset' })
+			return dispatch({ type: USER_PROFILE_CREATE });
 		})
-			.then(response => {
-				console.log(response);
-				dispatch({ type: USER_PROFILE_UPDATE });
-				Actions.main();
-				// Actions.Profile({ type: 'reset' })
+		.catch(error => {
+			console.log(error);
+		});
+
+export const userProfileUpdate = ({ name, bio, location }) => dispatch =>
+	//insert into mongo db
+
+	firebase
+		.auth()
+		.currentUser.getIdToken(/* forceRefresh */ true)
+		.then(userIdToken =>
+			fetch(`${DBurl}/user`, {
+				method: 'put',
+				headers: new Headers({
+					Authorization: userIdToken,
+					'Content-Type': 'application/json'
+				}),
+				body: JSON.stringify({ name, bio, location })
 			})
-			.catch(error => {
-				console.log(error);
-			});
-	};
-};
-
-export const userProfileFetch = () => {
-	const userId = firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
-	return dispatch => {
-		//get profile from mongo db
-
-		Axios.get({
-			method: 'get',
-			url: `${dbURL}/user`,
-			auth: {
-				userId
-			}
+		)
+		.then(response => {
+			console.log('user update response', response);
+			Actions.refresh();
+			return dispatch({ type: USER_PROFILE_UPDATE });
 		})
-			.then(response => {
-				console.log(response);
-				dispatch({
-					type: USER_PROFILE_READ,
-					payload: response.data
-				});
+		.catch(error => {
+			console.log(error);
+		});
+
+export const userProfileFetch = () => dispatch =>
+	//get profile from mongo db
+	firebase
+		.auth()
+		.currentUser.getIdToken(/* forceRefresh */ true)
+		.then(userIdToken =>
+			fetch(`${DBurl}/user`, {
+				method: 'get',
+				headers: new Headers({ Authorization: userIdToken })
 			})
-			.catch(error => {
-				console.log(error);
+		)
+		.then(response => response.json())
+		.then(response => {
+			console.log('USER_PROFILE_READ', response);
+			return dispatch({
+				type: USER_PROFILE_READ,
+				payload: response
 			});
-	};
-};
+		})
+		.catch(error => {
+			console.log(error);
+		});
 
 export const userUpdate = ({ prop, value }) => ({
 	type: USER_PROFILE_UPDATE,
@@ -116,97 +99,88 @@ export const userRideCreate = ({
 	trackAvgHeartRate,
 	title,
 	notes
-}) => {
-	const userId = firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
-
+}) =>
 	//return object or use dispatch to satisfy ReduxThunk rules
 	//pass {type:'reset'} to Actions.componentKeyName() so no "Back" arrow appears in header
 
-	return dispatch => {
-		//insert into mongo db
-
-		Axios.post({
-			method: 'post',
-			url: `${dbURL}/user`,
-			data: {
-				trackTimeTotal,
-				trackAvgSpeed,
-				trackDistance,
-				trackAvgPower,
-				trackAvgCadence,
-				trackAvgHeartRate,
-				title,
-				notes
-			},
-			auth: {
-				userId
-			}
-		})
-			.then(response => {
-				console.log(response);
-				dispatch({ type: USER_RIDE_CREATE });
-				Actions.main();
-				// Actions.Profile({ type: 'reset' })
-			})
-			.catch(error => {
-				console.log(error);
-			});
-	};
-};
-
-export const userRideFetch = () => {
-	const userId = firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
-	return dispatch => {
-		//get rides from mongo db
-
-		Axios.get({
-			method: 'get',
-			url: `${dbURL}/ride`,
-			auth: {
-				userId
-			}
-		})
-			.then(response => {
-				//TODO response is array of bike ride objects
-				console.log(response);
-				dispatch({
-					type: USER_RIDE_READ,
-					payload: response.data
+	dispatch =>
+		firebase
+			.auth()
+			.currentUser.getIdToken(/* forceRefresh */ true)
+			.then(userIdToken => {
+				//insert into mongo db
+				fetch(`${DBurl}/ride`, {
+					method: 'post',
+					headers: new Headers({
+						Authorization: userIdToken,
+						'Content-Type': 'application/json'
+					}),
+					body: JSON.stringify({
+						trackTimeTotal,
+						trackAvgSpeed,
+						trackDistance,
+						trackAvgPower,
+						trackAvgCadence,
+						trackAvgHeartRate,
+						title,
+						notes
+					})
 				});
 			})
-			.catch(error => {
-				console.log(error);
-			});
-	};
-};
-
-export const userRideDelete = ({ _id }) => {
-	const userId = firebase.auth().currentUser.getIdToken(/* forceRefresh */ true);
-
-	return dispatch => {
-		//delete from  mongo db
-
-		Axios.delete({
-			method: 'post',
-			url: `${dbURL}/user/`,
-			params: {
-				id: _id
-			},
-			auth: {
-				userId
-			}
-		})
 			.then(response => {
-				console.log(response);
-				dispatch({ type: USER_RIDE_CREATE });
-				Actions.main();
-				// Actions.Profile({ type: 'reset' })
+				console.log('USER_RIDE_CREATE', response);
+				return dispatch({ type: USER_RIDE_CREATE });
 			})
 			.catch(error => {
 				console.log(error);
 			});
-	};
-};
+
+export const userRideFetch = () => dispatch =>
+	//get rides from mongo db
+	firebase
+		.auth()
+		.currentUser.getIdToken(/* forceRefresh */ true)
+		.then(userIdToken =>
+			fetch(`${DBurl}/ride`, {
+				method: 'get',
+				headers: new Headers({ Authorization: userIdToken })
+			})
+		)
+		.then(response => response.json())
+		.then(response => {
+			console.log('USER_RIDE_READ', response);
+			return dispatch({
+				type: USER_RIDE_READ,
+				payload: response
+			});
+		})
+		.catch(error => {
+			console.log(error);
+		});
+
+export const userRideDelete = ({ _id }) => dispatch =>
+	firebase
+		.auth()
+		.currentUser.getIdToken(/* forceRefresh */ true)
+		.then(userIdToken => {
+			//delete from  mongo db
+			fetch(`${DBurl}/user/${_id}`, {
+				method: 'delete',
+				headers: new Headers({
+					Authorization: userIdToken,
+					'Content-Type': 'application/json'
+				})
+			});
+		})
+		.then(response => {
+			console.log('USER_RIDE_DELETE', response);
+			Actions.main();
+			// Actions.Profile({ type: 'reset' })
+			return dispatch({ type: USER_RIDE_DELETE });
+		})
+		.catch(error => {
+			console.log(error);
+		});
 
 export const userTrackUpdate = ({ prop, value }) => ({
 	type: USER_TRACK_UPDATE,

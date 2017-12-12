@@ -29,7 +29,8 @@ const styles = {
 		fontSize: 18,
 		lineHeight: 23,
 		flex: 2,
-		height: 100
+		height: 100,
+		flexWrap: 'wrap'
 	},
 	labelStyle: {
 		fontSize: 18,

@@ -33,7 +33,7 @@ class RideSummaryData extends Component {
 			title,
 			notes
 		});
-		Actions.Profile();
+		Actions.main({ type: 'reset' });
 	}
 
 	cancelRideData() {

@@ -24,7 +24,6 @@ const RouterComponent = () => (
 					onRight={() => Actions.Profile()}
 				/>
 				<Scene
-					initial
 					title="Ride Summary"
 					key="RideSummary"
 					component={RideSummaryData}

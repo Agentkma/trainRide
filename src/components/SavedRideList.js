@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ListView, Text } from 'react-native';
+import { ListView } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
@@ -20,13 +20,11 @@ class SavedRideList extends Component {
 		const ds = new ListView.DataSource({
 			rowHasChanged: (r1, r2) => r1 !== r2
 		});
-		//TODO get ride data from heroku / mongoDB
-		console.log('rides', rides);
 		this.dataSource = ds.cloneWithRows(rides);
 	}
 
-	renderRow(rides) {
-		return <ListItem rides={rides} />;
+	renderRow(ride) {
+		return <ListItem ride={ride} />;
 	}
 
 	render() {
@@ -36,8 +34,10 @@ class SavedRideList extends Component {
 	}
 }
 
-const mapStateToProps = state => {
-	const rides = _.map(state.rides, (val, uid) => ({ ...val, uid }));
+const mapStateToProps = ({ userTrackRide }) => {
+	// let { rides } = userTrackRide;
+	let { rides } = userTrackRide;
+	rides = rides.map(ride => ride.title);
 
 	return { rides };
 };

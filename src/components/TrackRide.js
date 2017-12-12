@@ -36,9 +36,6 @@ class TrackRide extends Component {
 	}
 
 	// lifecycle events
-	// componentDidMount() {
-	// 	this.interval = setInterval(this.onTick.bind(this));
-	// }
 
 	componentDidMount() {
 		this.interval = setInterval(this.onTick.bind(this));
@@ -265,4 +262,6 @@ const mapStateToProps = ({ userTrackRide }) => {
 	};
 };
 
-export default connect(mapStateToProps, { userTrackUpdate,, userProfileFetch, userRideFetch })(TrackRide);
+export default connect(mapStateToProps, { userTrackUpdate, userProfileFetch, userRideFetch })(
+	TrackRide
+);

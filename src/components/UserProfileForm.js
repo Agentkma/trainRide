@@ -7,6 +7,7 @@ import { userUpdate } from '../actions';
 
 class UserProfileForm extends Component {
 	render() {
+		const { bioContainerStyle, inputBioStyle } = styles;
 		return (
 			<View>
 				<CardSection>
@@ -26,12 +27,13 @@ class UserProfileForm extends Component {
 					/>
 				</CardSection>
 
-				<CardSection>
+				<CardSection style={bioContainerStyle}>
 					<TextAreaInput
 						label="Bio"
 						placeholder="describe yourself..."
 						value={this.props.bio}
 						onChangeText={value => this.props.userUpdate({ prop: 'bio', value })}
+						style={inputBioStyle}
 					/>
 				</CardSection>
 			</View>
@@ -39,11 +41,10 @@ class UserProfileForm extends Component {
 	}
 }
 
-// const styles = {
-// 	inputBioStyle: {
-// 		height: 100
-// 	}
-// };
+const styles = {
+	bioContainerStyle: {},
+	inputBioStyle: {}
+};
 
 const mapStateToProps = ({ userProfile }) => {
 	const { name, location, bio } = userProfile;
