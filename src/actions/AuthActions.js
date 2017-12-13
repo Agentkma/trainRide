@@ -52,5 +52,5 @@ const loginUserSuccess = (dispatch, user) => {
 
 	//user react-native-router-flux to nav to correct screen/scene
 	// key property of scene is used as method on Actions
-	Actions.TrackRide();
+	Actions.main({ type: 'reset' });
 };

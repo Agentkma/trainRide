@@ -6,6 +6,7 @@ import LoginForm from './components/LoginForm.js';
 import TrackRide from './components/TrackRide.js';
 import UserProfileEdit from './components/UserProfileEdit.js';
 import RideSummaryData from './components/RideSummaryData.js';
+import RideViewData from './components/RideViewData.js';
 
 const RouterComponent = () => (
 	<Router sceneStyle={{ paddingTop: 10 }}>
@@ -30,6 +31,7 @@ const RouterComponent = () => (
 					rightTitle="Profile"
 					onRight={() => Actions.Profile()}
 				/>
+				<Scene title="View Summary" key="RideViewData" component={RideViewData} />
 
 				<Scene title="Profile" key="Profile" component={UserProfileEdit} />
 			</Scene>

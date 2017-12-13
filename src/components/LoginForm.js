@@ -41,13 +41,7 @@ class LoginForm extends Component {
 	}
 
 	render() {
-		const {
-			headerContainerStyle,
-			headerTextStyle,
-			subHeaderTextStyle,
-			imageStyle,
-			buttonContainerStyle
-		} = styles;
+		const { imageStyle } = styles;
 		return (
 			<ImageBackground source={splashImage} style={imageStyle}>
 				<Card>

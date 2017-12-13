@@ -194,7 +194,7 @@ export const userTrackUpdate = ({ prop, value }) => ({
 	payload: { prop, value }
 });
 
-export const userSavedRideView = ({ _id }) => ({
+export const userSavedRideView = _id => ({
 	type: USER_SAVED_RIDE_VIEW,
-	payload: { _id }
+	payload: _id
 });

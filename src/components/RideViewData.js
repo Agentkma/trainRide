@@ -4,37 +4,22 @@ import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 
 import ChartWebView from './ChartWebView.js';
-import { userRideCreate, userTrackUpdate } from '../actions';
+import { userTrackUpdate } from '../actions';
 import { Card, CardSection, Button, Input, TextAreaInput } from './common';
 
-//data = ride data: time, distance, avg speed, avg power, avg cadence,avg heart rate
-class RideSummaryData extends Component {
+class RideViewData extends Component {
 	saveRideData() {
-		const {
-			trackTimeTotal,
-			trackAvgSpeed,
-			trackDistance,
-			trackAvgPower,
-			trackAvgCadence,
-			trackAvgHeartRate,
-			title,
-			notes
-		} = this.props;
+		const { title, notes } = this.props.rides;
+
 		//call action creator to save ride data to db
-		this.props.userRideCreate({
-			trackTimeTotal,
-			trackAvgSpeed,
-			trackDistance,
-			trackAvgPower,
-			trackAvgCadence,
-			trackAvgHeartRate,
+		this.props.userTrackUpdate({
 			title,
 			notes
 		});
 		Actions.main({ type: 'reset' });
 	}
 
-	cancelRideData() {
+	closeRideView() {
 		Actions.TrackRide({ type: 'reset' });
 	}
 
@@ -47,15 +32,19 @@ class RideSummaryData extends Component {
 			cardSectionStyle,
 			statContainerStyle
 		} = styles;
-
+		const { _id } = this.props;
+		// console.log('id of ride selected', _id);
 		const {
 			trackTimeTotal,
 			trackAvgSpeed,
 			trackDistance,
 			trackAvgPower,
 			trackAvgCadence,
-			trackAvgHeartRate
-		} = this.props;
+			trackAvgHeartRate,
+			title,
+			notes
+		} = this.props.rides[_id];
+		// console.log('this.props.rides[id]', this.props.rides[id]);
 
 		return (
 			<View>
@@ -97,7 +86,7 @@ class RideSummaryData extends Component {
 						<Input
 							label="Title"
 							placeholder="Title"
-							value={this.props.title}
+							value={title}
 							onChangeText={value =>
 								this.props.userTrackUpdate({ prop: 'title', value })}
 						/>
@@ -106,7 +95,7 @@ class RideSummaryData extends Component {
 						<TextAreaInput
 							label="Notes"
 							placeholder="notes from your ride..."
-							value={this.props.notes}
+							value={notes}
 							onChangeText={value =>
 								this.props.userTrackUpdate({ prop: 'notes', value })}
 						/>
@@ -118,37 +107,13 @@ class RideSummaryData extends Component {
 						}}
 					>
 						<Button onPress={this.saveRideData.bind(this)}>Save</Button>
-						<Button onPress={this.cancelRideData.bind(this)}>Cancel</Button>
+						<Button onPress={this.closeRideView.bind(this)}>Close</Button>
 					</CardSection>
 				</Card>
 			</View>
 		);
 	}
 }
-// state or destructured state of {userTrackRide}  comes from key names from reducers/index.js file
-const mapStateToProps = ({ userTrackRide }) => {
-	const {
-		trackTimeTotal,
-		trackAvgSpeed,
-		trackDistance,
-		trackAvgPower,
-		trackAvgCadence,
-		trackAvgHeartRate,
-		title,
-		notes
-	} = userTrackRide;
-
-	return {
-		trackTimeTotal,
-		trackAvgSpeed,
-		trackDistance,
-		trackAvgPower,
-		trackAvgCadence,
-		trackAvgHeartRate,
-		title,
-		notes
-	};
-};
 
 const styles = {
 	cardStyle: {
@@ -176,7 +141,7 @@ const styles = {
 		alignSelf: 'center',
 		fontWeight: '400',
 		paddingTop: 5,
-		paddingBottom: 10
+		paddngBottom: 10
 	},
 	textAreaStyle: {
 		height: 100
@@ -193,4 +158,14 @@ const styles = {
 	}
 };
 
-export default connect(mapStateToProps, { userRideCreate, userTrackUpdate })(RideSummaryData);
+// state or destructured state of {userTrackRide}  comes from key names from reducers/index.js file
+const mapStateToProps = ({ userTrackRide }) => {
+	const { rides, _id } = userTrackRide;
+
+	return {
+		rides,
+		_id
+	};
+};
+
+export default connect(mapStateToProps, { userTrackUpdate })(RideViewData);

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 
 import { CardSection, Confirm } from './common';
-import { userRideDelete, userRideFetch } from '../actions';
+import { userRideDelete, userRideFetch, userSavedRideView } from '../actions';
 
 const viewIcon = require('../img/icon_pageview_1x.png');
 const deleteIcon = require('../img/icon_delete_1x.png');
@@ -42,15 +42,15 @@ class ListItem extends Component {
 	}
 
 	viewRideStats() {
-		//TODO need an action creator that will take in the id of the ride and then set the state to equal this ride data.
-		//then nav to teh RideSummaryData
+		const id = this.props.ride._id;
+		this.props.userSavedRideView(id);
+		Actions.RideViewData();
 	}
 
 	render() {
 		const { rowStyle, titleStyle, iconContainerStyle, iconImageStyle } = styles;
 
 		const title = this.props.ride.title;
-		console.log('this.props.ride', this.props.ride);
 
 		return (
 			<View style={rowStyle}>
@@ -97,12 +97,4 @@ const styles = {
 	}
 };
 
-// const mapStateToProps = ({ userTrackRide }) => {
-// 	const { _id } = userTrackRide;
-//
-// 	return {
-// 		_id
-// 	};
-// };
-
-export default connect(null, { userRideDelete, userRideFetch })(ListItem);
+export default connect(null, { userRideDelete, userRideFetch, userSavedRideView })(ListItem);

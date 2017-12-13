@@ -34,7 +34,7 @@ export default (state = INITIAL_STATE, action) => {
 		case USER_SAVED_RIDE_VIEW:
 			return {
 				...state,
-				rides: action.payload
+				_id: action.payload
 			};
 		default:
 			return state;
