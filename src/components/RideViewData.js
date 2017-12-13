@@ -1,36 +1,25 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { Actions } from 'react-native-router-flux';
 
 import ChartWebView from './ChartWebView.js';
 import { userTrackUpdate } from '../actions';
-import { Card, CardSection, Button, Input, TextAreaInput } from './common';
+import { Card, CardSection } from './common';
 
 class RideViewData extends Component {
-	saveRideData() {
-		const { title, notes } = this.props.rides;
-
-		//call action creator to save ride data to db
-		this.props.userTrackUpdate({
-			title,
-			notes
-		});
-		Actions.main({ type: 'reset' });
-	}
-
-	closeRideView() {
-		Actions.TrackRide({ type: 'reset' });
-	}
-
 	render() {
 		const {
+			mainContainerStyle,
 			cardStyle,
-			headerTextStyle,
+			statHeaderStyle,
 			chart1Style,
+			statTextStyle,
 			textStyle,
+			headerStyle,
 			cardSectionStyle,
-			statContainerStyle
+			statContainerStyle,
+			titleContainerStyle,
+			notesContainerStyle
 		} = styles;
 		const { _id } = this.props;
 		// console.log('id of ride selected', _id);
@@ -47,7 +36,7 @@ class RideViewData extends Component {
 		// console.log('this.props.rides[id]', this.props.rides[id]);
 
 		return (
-			<View>
+			<View style={mainContainerStyle}>
 				<View style={chart1Style}>
 					<ChartWebView />
 				</View>
@@ -55,59 +44,40 @@ class RideViewData extends Component {
 				<Card style={cardStyle}>
 					<CardSection style={cardSectionStyle}>
 						<View style={statContainerStyle}>
-							<Text style={headerTextStyle}>Time</Text>
-							<Text style={textStyle}> {trackTimeTotal}</Text>
+							<Text style={statHeaderStyle}>Time</Text>
+							<Text style={statTextStyle}> {trackTimeTotal}</Text>
 						</View>
 						<View style={statContainerStyle}>
-							<Text style={headerTextStyle}>Distance</Text>
-							<Text style={textStyle}> {trackDistance} miles</Text>
+							<Text style={statHeaderStyle}>Distance</Text>
+							<Text style={statTextStyle}> {trackDistance} miles</Text>
 						</View>
 						<View style={statContainerStyle}>
-							<Text style={headerTextStyle}>Avg Spd</Text>
-							<Text style={textStyle}>{trackAvgSpeed} mph</Text>
+							<Text style={statHeaderStyle}>Avg Spd</Text>
+							<Text style={statTextStyle}>{trackAvgSpeed} mph</Text>
 						</View>
 					</CardSection>
 
 					<CardSection style={cardSectionStyle}>
 						<View style={statContainerStyle}>
-							<Text style={headerTextStyle}>Avg Pwr</Text>
-							<Text style={textStyle}>{trackAvgPower} watts</Text>
+							<Text style={statHeaderStyle}>Avg Pwr</Text>
+							<Text style={statTextStyle}>{trackAvgPower} watts</Text>
 						</View>
 						<View style={statContainerStyle}>
-							<Text style={headerTextStyle}>Avg Cad.</Text>
-							<Text style={textStyle}>{trackAvgCadence} rpm</Text>
+							<Text style={statHeaderStyle}>Avg Cad.</Text>
+							<Text style={statTextStyle}>{trackAvgCadence} rpm</Text>
 						</View>
 						<View style={statContainerStyle}>
-							<Text style={headerTextStyle}>Avg Hrt Rt</Text>
-							<Text style={textStyle}>{trackAvgHeartRate} bpm</Text>
+							<Text style={statHeaderStyle}>Avg Hrt Rt</Text>
+							<Text style={statTextStyle}>{trackAvgHeartRate} bpm</Text>
 						</View>
 					</CardSection>
-					<CardSection>
-						<Input
-							label="Title"
-							placeholder="Title"
-							value={title}
-							onChangeText={value =>
-								this.props.userTrackUpdate({ prop: 'title', value })}
-						/>
+					<CardSection style={titleContainerStyle}>
+						<Text style={headerStyle}>Title</Text>
+						<Text style={textStyle}>{title}</Text>
 					</CardSection>
-					<CardSection>
-						<TextAreaInput
-							label="Notes"
-							placeholder="notes from your ride..."
-							value={notes}
-							onChangeText={value =>
-								this.props.userTrackUpdate({ prop: 'notes', value })}
-						/>
-					</CardSection>
-					<CardSection
-						style={{
-							flexDirection: 'row',
-							justifyContent: 'space-between'
-						}}
-					>
-						<Button onPress={this.saveRideData.bind(this)}>Save</Button>
-						<Button onPress={this.closeRideView.bind(this)}>Close</Button>
+					<CardSection style={notesContainerStyle}>
+						<Text style={headerStyle}>Notes</Text>
+						<Text tyle={textStyle}>{notes}</Text>
 					</CardSection>
 				</Card>
 			</View>
@@ -116,8 +86,12 @@ class RideViewData extends Component {
 }
 
 const styles = {
+	mainContainerStyle: {
+		flex: 1
+	},
 	cardStyle: {
-		marginTop: 5
+		marginTop: 5,
+		flex: 2
 	},
 	headerContentStyle: {
 		flexDirection: 'column',
@@ -129,32 +103,50 @@ const styles = {
 		borderWidth: 1,
 		borderRadius: 5
 	},
-	headerTextStyle: {
+	statHeaderStyle: {
 		fontSize: 18,
 		fontWeight: '600',
 		alignSelf: 'center',
-		paddingTop: 5
+		paddingTop: 5,
+		paddingBottom: 5
 	},
-	textStyle: {
+	statTextStyle: {
 		lineHeight: 15,
 		fontSize: 14,
 		alignSelf: 'center',
 		fontWeight: '400',
 		paddingTop: 5,
-		paddngBottom: 10
+		paddingBottom: 5
 	},
-	textAreaStyle: {
-		height: 100
+	textStyle: {
+		lineHeight: 15,
+		fontSize: 14,
+		fontWeight: '400',
+		paddingTop: 10,
+		paddingLeft: 10
+	},
+	headerStyle: {
+		fontSize: 18,
+		fontWeight: '600',
+		paddingTop: 5,
+		paddingRight: 10
+	},
+	titleContainerStyle: {
+		flex: 1
+	},
+	notesContainerStyle: {
+		flex: 2
 	},
 	chart1Style: {
-		height: '30%',
+		flex: 1,
 		width: '100%',
 		paddingLeft: 5,
 		paddingRight: 5
 	},
 	cardSectionStyle: {
 		flexDirection: 'row',
-		justifyContent: 'space-between'
+		justifyContent: 'space-between',
+		flex: 1
 	}
 };
 

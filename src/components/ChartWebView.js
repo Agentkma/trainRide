@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
-import { WebView, Text } from 'react-native';
+import { WebView } from 'react-native';
 import WebFiles from '../webView/index.html';
 
 // onMessage() in WebView allows bi directional data flow to web files and react-native
 class ChartWebView extends Component {
-	// constructor(props) {
-	// 	super(props);
-	// 	this.webview.postMessage('Hello from RN');
-	// }
-	// this.webview.postMessage('Hello from RN');
-
 	onError() {
 		// console.log('did not load');
 	}
