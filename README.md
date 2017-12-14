@@ -1,7 +1,3 @@
-# trainRide
-Renamed to "terraGO" | Capstone Mobile App | Galvanize
-
-
 # Title:  terraGO
 
 ## Description
@@ -13,10 +9,14 @@ Mobile app for tracking cycling ride data that is simple and focused [link to th
 
 ### ScreenShots
 ![Login](./readMeImg/KaptureTerraGOlogin.gif)
+
 ![Map](./readMeImg/KaptureTerraGORideMap1.0.gif)
+
 ![Track Ride](./readMeImg/KaptureTerraGOstart.gif)
+
 ![Profile View Delete](./readMeImg/KaptureProfileAndRideView.gif)
-![Ride Summary](./readMeImg/KaptureTerraGOSummary.gif)
+
+![Ride Summary](./readMeImg/KaptureTerraGOrideSummary.gif)
 
 ## Context
 ### Motivation
@@ -40,7 +40,9 @@ I envision people that enjoy competitive biking but also want to keep the experi
 - spec six: MongoDB
 - spec seven: Heroku
 - spec eight: React-Native-Maps / Google maps
-- spec eight: Express
+- spec nine: Express
+- spec ten: mLab
+- spec eleven: Mongoose
 
 
 
