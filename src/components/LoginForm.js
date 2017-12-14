@@ -3,6 +3,7 @@ import { View, Text, ImageBackground } from 'react-native';
 import { connect } from 'react-redux';
 
 import { Card, CardSection, Input, Button, Spinner } from './common';
+
 import { emailChanged, passwordChanged, loginUser } from '../actions';
 
 const splashImage = require('../img/splash.jpg');
@@ -33,18 +34,34 @@ class LoginForm extends Component {
 		}
 	}
 
-	renderBtnOrSpinner() {
+	renderLogInBtnOrSpinner() {
+		// const { loginBtnContainerStyle } = styles;
 		if (this.props.loading) {
 			return <Spinner size="large" />;
 		}
-		return <Button onPress={this.onButtonPress.bind(this)}>Log In</Button>;
+		return (
+			<Button
+				style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }}
+				onPress={this.onButtonPress.bind(this)}
+			>
+				Log In
+			</Button>
+		);
+	}
+
+	renderFBbtnOrSpinner() {
+		// const { loginBtnContainerStyle } = styles;
+		if (this.props.loading) {
+			return <Spinner size="large" />;
+		}
+		return <Buttonatom />;
 	}
 
 	render() {
-		const { imageStyle } = styles;
+		const { imageStyle, loginBtnContainerStyle, cardContainerStyle } = styles;
 		return (
 			<ImageBackground source={splashImage} style={imageStyle}>
-				<Card>
+				<Card style={cardContainerStyle}>
 					<CardSection>
 						<Input
 							autoFocus
@@ -62,8 +79,9 @@ class LoginForm extends Component {
 						/>
 					</CardSection>
 					{this.renderErrorMsg()}
-					<CardSection>{this.renderBtnOrSpinner()}</CardSection>
 				</Card>
+				<View style={loginBtnContainerStyle}>{this.renderLogInBtnOrSpinner()}</View>
+				<View style={loginBtnContainerStyle}>{this.renderFBbtnOrSpinner()}</View>
 			</ImageBackground>
 		);
 	}
@@ -75,12 +93,8 @@ const styles = {
 		alignSelf: 'center',
 		color: 'red'
 	},
-	headerContainerStyle: {
-		paddingTop: '10%',
-		paddingBottom: '10%',
-		flexDirection: 'column',
-		justifyContent: 'center',
-		backgroundColor: 'rgba(0, 0, 0, 0.85)'
+	cardContainerStyle: {
+		marginTop: '30%'
 	},
 	headerTextStyle: {
 		fontSize: 36,
@@ -102,10 +116,10 @@ const styles = {
 		width: null,
 		alignSelf: 'stretch'
 	},
-	buttonContainerStyle: {
-		paddingTop: '85%',
+	loginBtnContainerStyle: {
+		paddingTop: 10,
 		flexDirection: 'row',
-		width: '50%',
+		width: '100%',
 		backgroundColor: 'transparent',
 		justifyContent: 'center',
 		alignSelf: 'center'
