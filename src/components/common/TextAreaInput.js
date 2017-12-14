@@ -7,8 +7,9 @@ const TextAreaInput = ({ label, value, onChangeText, placeholder, secureTextEntr
 	return (
 		<View style={containerStyle}>
 			<Text style={labelStyle}>{label}</Text>
+
 			<TextInput
-				multiLine
+				multiline
 				style={inputStyle}
 				value={value}
 				onChangeText={onChangeText}
@@ -29,7 +30,8 @@ const styles = {
 		fontSize: 18,
 		lineHeight: 23,
 		flex: 2,
-		height: 100
+		height: 100,
+		flexWrap: 'wrap'
 	},
 	labelStyle: {
 		fontSize: 18,

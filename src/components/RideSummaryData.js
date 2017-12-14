@@ -31,17 +31,12 @@ class RideSummaryData extends Component {
 			title,
 			notes
 		});
-		Actions.Profile();
+		Actions.main({ type: 'reset' });
 	}
 
 	cancelRideData() {
-		Actions.TrackRide();
+		Actions.TrackRide({ type: 'reset' });
 	}
-
-	// rideDataUpdate({ prop, value }) {
-	// 	this.props[prop] = value;
-	// 	console.log(this.props[prop]);
-	// }
 
 	render() {
 		const {
@@ -59,9 +54,7 @@ class RideSummaryData extends Component {
 			trackDistance,
 			trackAvgPower,
 			trackAvgCadence,
-			trackAvgHeartRate,
-			title,
-			notes
+			trackAvgHeartRate
 		} = this.props;
 
 		return (

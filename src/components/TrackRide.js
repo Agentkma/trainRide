@@ -5,7 +5,7 @@ import MapView from 'react-native-maps';
 import { Actions } from 'react-native-router-flux';
 // import _ from 'lodash';
 
-import { userTrackUpdate } from '../actions';
+import { userTrackUpdate, userProfileFetch, userRideFetch } from '../actions';
 import { Card, CardSection, Button } from './common';
 
 const LATITUDE_DELTA = 0.0922;
@@ -36,15 +36,11 @@ class TrackRide extends Component {
 	}
 
 	// lifecycle events
-	// componentDidMount() {
-	// 	this.interval = setInterval(this.onTick.bind(this));
-	// }
 
 	componentDidMount() {
 		this.interval = setInterval(this.onTick.bind(this));
 		navigator.geolocation.getCurrentPosition(
 			position => {
-				console.log(position);
 				this.setState({
 					currentRegion: {
 						latitude: position.coords.latitude,
@@ -60,13 +56,11 @@ class TrackRide extends Component {
 					}
 				});
 				this.forceUpdate();
-				console.log(this.state.marker.latlng);
 			},
 			error => alert(error.message),
 			{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
 		);
 		this.watchID = navigator.geolocation.watchPosition(position => {
-			console.log(position);
 			this.setState({
 				currentRegion: {
 					latitude: position.coords.latitude,
@@ -76,6 +70,9 @@ class TrackRide extends Component {
 				}
 			});
 		});
+
+		this.props.userProfileFetch();
+		this.props.userRideFetch();
 	}
 
 	componentWillUnmount() {
@@ -128,7 +125,6 @@ class TrackRide extends Component {
 	}
 
 	updateLatLng() {
-		console.log(this.state.marker.latlng);
 		return {
 			latitude: this.state.marker.latlng.latitude,
 			longitude: this.state.marker.latlng.longitude
@@ -147,23 +143,31 @@ class TrackRide extends Component {
 	}
 
 	render() {
-		const { statContainerStyle, textStyle, mapViewStyle } = styles;
+		const {
+			parentContainerStyle,
+			statContainerStyle,
+			cardMapContainerStyle,
+			headerTextStyle,
+			textStyle,
+			mapViewStyle,
+			buttonContainerStyle
+		} = styles;
 
 		return (
-			<View>
-				<Card style={{ marginTop: 0 }}>
+			<View style={parentContainerStyle}>
+				<Card style={{ marginTop: 0, flex: 3 }}>
 					<CardSection style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 						<View style={statContainerStyle}>
-							<Text style={textStyle}>Time</Text>
+							<Text style={headerTextStyle}>Time</Text>
 							<Text style={textStyle}>{this.state.formattedTime}</Text>
 						</View>
 						<View style={statContainerStyle}>
-							<Text style={textStyle}>Distance</Text>
+							<Text style={headerTextStyle}>Distance</Text>
 							<Text style={textStyle}>{this.state.formattedDistance}</Text>
 						</View>
 					</CardSection>
-					<CardSection>
-						<View style={{ flex: 1, height: 375 }}>
+					<CardSection style={cardMapContainerStyle}>
+						<View style={{ flex: 1 }}>
 							<MapView
 								style={mapViewStyle}
 								showsUserLocation
@@ -183,12 +187,7 @@ class TrackRide extends Component {
 							</MapView>
 						</View>
 					</CardSection>
-					<CardSection
-						style={{
-							flexDirection: 'row',
-							justifyContent: 'space-between'
-						}}
-					>
+					<CardSection style={buttonContainerStyle}>
 						{this.renderBtnStartOrPause.call(this)}
 						<Button onPress={this.onFinish.bind(this)}>FINISH</Button>
 					</CardSection>
@@ -199,19 +198,34 @@ class TrackRide extends Component {
 }
 
 const styles = {
+	parentContainerStyle: {
+		flex: 1
+	},
+	cardMapContainerStyle: {
+		flex: 3
+	},
 	statContainerStyle: {
-		width: '47.5%',
+		flex: 1,
+		marginLeft: 5,
+		marginRight: 5,
 		borderColor: 'red',
 		borderWidth: 1,
-		borderRadius: 5
+		borderRadius: 5,
+		justifyContent: 'space-between'
 	},
 	textStyle: {
-		lineHeight: 20,
-		fontSize: 20,
+		lineHeight: 16,
+		fontSize: 18,
 		alignSelf: 'center',
-		fontWeight: '600',
+		fontWeight: '400',
 		paddingTop: 10,
 		paddingBottom: 10
+	},
+	headerTextStyle: {
+		fontSize: 22,
+		fontWeight: '600',
+		alignSelf: 'center',
+		paddingTop: 5
 	},
 	mapViewStyle: {
 		position: 'absolute',
@@ -219,6 +233,10 @@ const styles = {
 		left: 0,
 		bottom: 0,
 		right: 0
+	},
+	buttonContainerStyle: {
+		flexDirection: 'row',
+		justifyContent: 'space-between'
 	}
 };
 
@@ -244,4 +262,6 @@ const mapStateToProps = ({ userTrackRide }) => {
 	};
 };
 
-export default connect(mapStateToProps, { userTrackUpdate })(TrackRide);
+export default connect(mapStateToProps, { userTrackUpdate, userProfileFetch, userRideFetch })(
+	TrackRide
+);
